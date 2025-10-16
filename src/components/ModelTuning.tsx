@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Brain, Cpu, Database, Play, Save, Settings, TrendingUp, Zap } from 'lucide-react';
+import { Brain, Cpu, Database, Play, Save, Settings, TrendingUp } from 'lucide-react';
 
 export default function ModelTuning() {
   const [selectedModel, setSelectedModel] = useState('threat-detection');
@@ -27,14 +27,6 @@ export default function ModelTuning() {
     { name: 'Dropout率', value: 0.3, min: 0.1, max: 0.5 },
   ];
 
-  const datasetStats = [
-    { category: '正常流量', samples: 2456789, percentage: 82 },
-    { category: 'SQL注入', samples: 145623, percentage: 5 },
-    { category: 'XSS攻击', samples: 123456, percentage: 4 },
-    { category: 'DDoS', samples: 98234, percentage: 3 },
-    { category: '其他威胁', samples: 178901, percentage: 6 },
-  ];
-
   const handleTraining = () => {
     setTraining(true);
     setTimeout(() => setTraining(false), 3000);
@@ -43,14 +35,14 @@ export default function ModelTuning() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-end space-x-3">
-        <button className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg transition-all duration-200 border border-gray-300">
+        <button className="flex items-center space-x-2 bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg transition-all duration-200 border border-gray-300 shadow-sm">
           <Save className="w-4 h-4" />
           <span className="text-sm font-medium">保存配置</span>
         </button>
         <button
           onClick={handleTraining}
           disabled={training}
-          className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/30"
+          className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
         >
           <Play className="w-4 h-4" />
           <span className="text-sm font-medium">{training ? '训练中...' : '开始训练'}</span>
@@ -62,10 +54,10 @@ export default function ModelTuning() {
           <div
             key={model.id}
             onClick={() => setSelectedModel(model.id)}
-            className={`cursor-pointer bg-white rounded-xl p-5 border transition-all duration-200 shadow-sm ${
+            className={`cursor-pointer bg-white rounded-lg p-5 transition-all duration-200 shadow-sm ${
               selectedModel === model.id
-                ? 'border-blue-500 ring-2 ring-blue-500/20'
-                : 'border-gray-200 hover:border-gray-300'
+                ? 'ring-2 ring-blue-500'
+                : 'hover:shadow-md'
             }`}
           >
             <div className="flex items-start justify-between mb-3">
@@ -91,19 +83,15 @@ export default function ModelTuning() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-          <div className="flex items-center justify-between mb-6">
+        <div className="lg:col-span-2 bg-white rounded-lg shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <TrendingUp className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-bold text-gray-900">训练指标</h2>
-            </div>
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
-              <Zap className="w-4 h-4" />
-              <span>实时监控</span>
+              <h2 className="text-lg font-semibold text-gray-900">训练指标</h2>
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="p-6 space-y-4">
             {trainingMetrics.map((metric) => (
               <div key={metric.epoch} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                 <div className="flex items-center justify-between mb-3">
@@ -139,25 +127,15 @@ export default function ModelTuning() {
               </div>
             ))}
           </div>
-
-          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <div className="flex items-center space-x-2 mb-2">
-              <TrendingUp className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-semibold text-green-700">训练性能优秀</span>
-            </div>
-            <p className="text-xs text-gray-600">
-              模型收敛良好，验证准确率达到 {trainingMetrics[trainingMetrics.length - 1].valAccuracy}%
-            </p>
-          </div>
         </div>
 
         <div className="space-y-6">
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center space-x-2 mb-6">
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="px-6 py-4 border-b border-gray-200 flex items-center space-x-2">
               <Settings className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-bold text-gray-900">超参数配置</h2>
+              <h2 className="text-lg font-semibold text-gray-900">超参数配置</h2>
             </div>
-            <div className="space-y-4">
+            <div className="p-6 space-y-4">
               {hyperparameters.map((param) => (
                 <div key={param.name}>
                   <div className="flex items-center justify-between mb-2">
@@ -181,19 +159,19 @@ export default function ModelTuning() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div className="flex items-center space-x-2 mb-6">
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="px-6 py-4 border-b border-gray-200 flex items-center space-x-2">
               <Cpu className="w-5 h-5 text-blue-600" />
-              <h2 className="text-lg font-bold text-gray-900">计算资源</h2>
+              <h2 className="text-lg font-semibold text-gray-900">计算资源</h2>
             </div>
-            <div className="space-y-4">
+            <div className="p-6 space-y-4">
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">GPU使用率</span>
                   <span className="text-sm font-semibold text-gray-900">78%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" style={{ width: '78%' }}></div>
+                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '78%' }}></div>
                 </div>
               </div>
               <div>
@@ -202,7 +180,7 @@ export default function ModelTuning() {
                   <span className="text-sm font-semibold text-gray-900">12.4 GB</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full" style={{ width: '62%' }}></div>
+                  <div className="h-full bg-green-600 rounded-full" style={{ width: '62%' }}></div>
                 </div>
               </div>
               <div>
@@ -211,35 +189,11 @@ export default function ModelTuning() {
                   <span className="text-sm font-semibold text-gray-900">45%</span>
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-orange-500 to-amber-600 rounded-full" style={{ width: '45%' }}></div>
+                  <div className="h-full bg-orange-600 rounded-full" style={{ width: '45%' }}></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center space-x-2 mb-6">
-          <Database className="w-5 h-5 text-blue-600" />
-          <h2 className="text-lg font-bold text-gray-900">训练数据集统计</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          {datasetStats.map((stat) => (
-            <div key={stat.category} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              <div className="text-2xl font-bold text-gray-900 mb-1">{stat.samples.toLocaleString()}</div>
-              <div className="text-sm text-gray-600 mb-3">{stat.category}</div>
-              <div className="flex items-center space-x-2">
-                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
-                    style={{ width: `${stat.percentage}%` }}
-                  ></div>
-                </div>
-                <span className="text-xs text-gray-500 font-semibold">{stat.percentage}%</span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

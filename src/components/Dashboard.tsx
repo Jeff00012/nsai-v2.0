@@ -1,4 +1,4 @@
-import { Shield, AlertTriangle, TrendingUp, Activity, Eye, Zap, Network, BarChart3 } from 'lucide-react';
+import { Shield, AlertTriangle, TrendingUp, Activity, Eye, Download, FileText } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
@@ -30,190 +30,145 @@ export default function Dashboard() {
   }, []);
 
   const statCards = [
-    { label: '检测威胁', value: stats.threats, change: '+12%', icon: AlertTriangle, color: 'red', gradient: 'from-red-500 to-rose-600' },
-    { label: '拦截攻击', value: stats.blocked, change: '+8%', icon: Shield, color: 'blue', gradient: 'from-blue-500 to-blue-600' },
-    { label: '模型准确率', value: `${stats.accuracy.toFixed(1)}%`, change: '+0.3%', icon: TrendingUp, color: 'green', gradient: 'from-green-500 to-emerald-600' },
-    { label: '系统可用性', value: `${stats.uptime.toFixed(1)}%`, change: '稳定', icon: Activity, color: 'orange', gradient: 'from-orange-500 to-amber-600' },
+    { label: '检测威胁', value: stats.threats, change: '+12%', icon: AlertTriangle, color: 'orange' },
+    { label: '拦截攻击', value: stats.blocked, change: '+8%', icon: Shield, color: 'blue' },
+    { label: '模型准确率', value: `${stats.accuracy.toFixed(1)}%`, change: '+0.3%', icon: TrendingUp, color: 'green' },
+    { label: '系统可用性', value: `${stats.uptime.toFixed(1)}%`, change: '稳定', icon: Activity, color: 'purple' },
   ];
 
   const recentThreats = [
-    { time: '14:32:15', type: 'SQL注入攻击', level: '高危', source: '203.0.113.42', status: '已拦截', target: 'api.example.com/login' },
-    { time: '14:28:09', type: 'XSS跨站脚本', level: '中危', source: '198.51.100.23', status: '已拦截', target: 'app.example.com/search' },
-    { time: '14:25:43', type: 'DDoS攻击', level: '高危', source: '192.0.2.146', status: '处理中', target: 'cdn.example.com' },
-    { time: '14:22:31', type: '暴力破解', level: '中危', source: '203.0.113.87', status: '已拦截', target: 'admin.example.com' },
-    { time: '14:18:56', type: '端口扫描', level: '低危', source: '198.51.100.91', status: '已拦截', target: '*.example.com' },
+    { id: 1, sequence: '1', name: 'SQL注入攻击检测项目', status: '已解析', time: '2025-10-13 09:09:47', level: '高危' },
+    { id: 2, sequence: '2', name: '软件系统开发项目', status: '已完成', time: '2025-10-13 09:07:17', level: '中危' },
+    { id: 3, sequence: '3', name: 'XSS跨站脚本防护', status: '已完成', time: '2025-10-13 06:35:21', level: '高危' },
+    { id: 4, sequence: '4', name: '软件系统开发项目', status: '解析失败', time: '2025-10-12 11:00:00', level: '严重' },
+    { id: 5, sequence: '5', name: '办公楼智能化系统集成项目', status: '解析中', time: '2025-10-11 14:20:00', progress: '65%', level: '中危' },
+    { id: 6, sequence: '6', name: '市政道路改造工程项目', status: '待解析', time: '2025-10-10 09:30:00', level: '低危' },
+    { id: 7, sequence: '7', name: '医院设备采购项目', status: '已完成', time: '2025-10-09 16:45:00', level: '中危' },
+    { id: 8, sequence: '8', name: '城市绿化景观工程', status: '已完成', time: '2025-10-08 10:15:00', level: '低危' },
   ];
 
-  const securityModules = [
-    { name: '威胁检测引擎', status: 'active', efficiency: 99.2, requests: 15234 },
-    { name: '行为分析模块', status: 'active', efficiency: 98.7, requests: 12890 },
-    { name: '入侵防御系统', status: 'active', efficiency: 99.5, requests: 10456 },
-    { name: '深度学习模型', status: 'active', efficiency: 97.8, requests: 9821 },
-  ];
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case '已解析':
+        return 'bg-green-50 text-green-700 border-green-200';
+      case '已完成':
+        return 'bg-blue-50 text-blue-700 border-blue-200';
+      case '解析失败':
+        return 'bg-red-50 text-red-700 border-red-200';
+      case '解析中':
+        return 'bg-orange-50 text-orange-700 border-orange-200';
+      case '待解析':
+        return 'bg-gray-50 text-gray-700 border-gray-200';
+      default:
+        return 'bg-gray-50 text-gray-700 border-gray-200';
+    }
+  };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
             <div
               key={card.label}
-              className="bg-white rounded-lg p-5 border border-gray-200 hover:shadow-sm transition-all duration-200"
+              className="bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-all duration-200"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className={`w-11 h-11 bg-gradient-to-br ${card.gradient} rounded-lg flex items-center justify-center`}>
+                <div className={`w-10 h-10 bg-${card.color}-500 rounded-lg flex items-center justify-center`}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded">
+                <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded">
                   {card.change}
                 </span>
               </div>
-              <div className="text-2xl font-bold text-gray-900 mb-0.5">{card.value}</div>
-              <div className="text-sm text-gray-500">{card.label}</div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">{card.value}</div>
+              <div className="text-sm text-gray-600">{card.label}</div>
             </div>
           );
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2 bg-white rounded-lg p-5 border border-gray-200">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-base font-semibold text-gray-900">实时威胁监控</h3>
-            <div className="flex items-center space-x-1.5 text-xs text-gray-500">
-              <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-              <span>自动刷新</span>
-            </div>
-          </div>
-          <div className="space-y-3">
-            {recentThreats.map((threat, idx) => (
-              <div
-                key={idx}
-                className="p-3.5 bg-gray-50 rounded border border-gray-200 hover:border-gray-300 transition-all duration-150"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-xs text-gray-500 font-mono bg-white px-2 py-1 rounded border border-gray-200">{threat.time}</span>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-gray-900">{threat.type}</span>
-                      <span className="text-xs text-gray-500">{threat.target}</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span
-                      className={`text-xs px-2.5 py-1 rounded-full font-semibold border ${
-                        threat.level === '高危'
-                          ? 'bg-red-50 text-red-700 border-red-200'
-                          : threat.level === '中危'
-                          ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                          : 'bg-blue-50 text-blue-700 border-blue-200'
-                      }`}
-                    >
-                      {threat.level}
-                    </span>
-                    <span
-                      className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
-                        threat.status === '已拦截'
-                          ? 'bg-green-50 text-green-700 border border-green-200'
-                          : 'bg-orange-50 text-orange-700 border border-orange-200'
-                      }`}
-                    >
+      <div className="bg-white rounded-lg shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900">威胁项目管理</h3>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">选择</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">序号</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">招标项目名称</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">状态</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">上传时间</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">操作</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {recentThreats.map((threat) => (
+                <tr key={threat.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <input type="checkbox" className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{threat.sequence}</td>
+                  <td className="px-6 py-4 text-sm text-gray-900">{threat.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium border ${getStatusStyle(threat.status)}`}>
                       {threat.status}
+                      {threat.progress && <span className="ml-1">{threat.progress}</span>}
                     </span>
-                  </div>
-                </div>
-                <div className="text-xs text-gray-600">
-                  来源: <span className="font-mono text-gray-900">{threat.source}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{threat.time}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
+                    <div className="flex items-center space-x-3">
+                      <button className="text-blue-600 hover:text-blue-800 flex items-center space-x-1">
+                        <FileText className="w-4 h-4" />
+                        <span>编辑</span>
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 flex items-center space-x-1">
+                        <Eye className="w-4 h-4" />
+                        <span>查看</span>
+                      </button>
+                      <button className="text-blue-600 hover:text-blue-800 flex items-center space-x-1">
+                        <Download className="w-4 h-4" />
+                        <span>下载</span>
+                      </button>
+                      <button className="text-red-600 hover:text-red-800">
+                        <span>删除</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        <div className="bg-white rounded-lg p-5 border border-gray-200">
-          <h3 className="text-base font-semibold text-gray-900 mb-4">安全模块</h3>
-          <div className="space-y-4">
-            {securityModules.map((module, idx) => (
-              <div key={idx} className="p-3.5 bg-gray-50 rounded border border-gray-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm font-semibold text-gray-900">{module.name}</span>
-                  </div>
-                  <span className="text-xs text-gray-600">{module.efficiency}%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
-                    style={{ width: `${module.efficiency}%` }}
-                  ></div>
-                </div>
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>今日处理请求</span>
-                  <span className="font-semibold text-blue-600">{module.requests.toLocaleString()}</span>
-                </div>
-              </div>
-            ))}
+        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <div className="text-sm text-gray-600">
+            共 8 条
           </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-white rounded-lg p-5 border border-gray-200">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="w-11 h-11 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Network className="w-5 h-5 text-blue-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">网络流量</div>
-              <div className="text-2xl font-bold text-gray-900">2.3 GB/s</div>
-            </div>
+          <div className="flex items-center space-x-2">
+            <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">
+              上一页
+            </button>
+            <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+              1
+            </button>
+            <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50">
+              下一页
+            </button>
+            <select className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600">
+              <option>10条/页</option>
+              <option>20条/页</option>
+              <option>50条/页</option>
+            </select>
+            <button className="px-4 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+              跳转
+            </button>
           </div>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">入站流量</span>
-              <span className="font-semibold text-gray-900">1.4 GB/s</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">出站流量</span>
-              <span className="font-semibold text-gray-900">0.9 GB/s</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg p-5 border border-gray-200">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="w-11 h-11 bg-green-100 rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <div className="text-sm text-gray-600">拦截率</div>
-              <div className="text-2xl font-bold text-gray-900">70.0%</div>
-            </div>
-          </div>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">今日拦截</span>
-              <span className="font-semibold text-green-600">873</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">误报率</span>
-              <span className="font-semibold text-gray-900">0.03%</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg p-5 text-white">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <div className="text-sm text-blue-100 mb-1">综合安全评分</div>
-              <div className="text-4xl font-bold">9.8</div>
-            </div>
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          <div className="text-sm text-blue-100">安全态势优秀</div>
         </div>
       </div>
     </div>
