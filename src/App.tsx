@@ -33,9 +33,6 @@ function App() {
             <button className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
               <Bell className="w-5 h-5" />
             </button>
-            <button className="text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-              <Bot className="w-5 h-5" />
-            </button>
             <button className="relative text-gray-500 hover:text-gray-700">
               <Bell className="w-5 h-5" />
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">1</span>
